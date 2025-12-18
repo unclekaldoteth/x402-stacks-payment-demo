@@ -144,6 +144,48 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- CoinMarketCap BTC Price -->
+                    <div class="product-card featured">
+                        <div class="featured-badge">CMC</div>
+                        <div class="product-image">
+                            <div class="product-icon">💰</div>
+                        </div>
+                        <div class="product-info">
+                            <span class="endpoint-badge stx">STX</span>
+                            <h3 class="product-name">BTC Price (CMC)</h3>
+                            <p class="product-description">Bitcoin price from CoinMarketCap</p>
+                            <code class="endpoint-path">GET /api/x402/cmc/btc-price</code>
+                            <div class="product-price">
+                                <span class="price-sbtc">0.0001 STX</span>
+                            </div>
+                            <button class="pay-button" onclick="testEndpoint('/api/x402/cmc/btc-price', 'stx')">
+                                <span class="btn-icon">⚡</span>
+                                Test x402 Payment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hiro Stacks Network Info -->
+                    <div class="product-card featured">
+                        <div class="featured-badge">HIRO</div>
+                        <div class="product-image">
+                            <div class="product-icon">🔗</div>
+                        </div>
+                        <div class="product-info">
+                            <span class="endpoint-badge stx">STX</span>
+                            <h3 class="product-name">Stacks Network Info</h3>
+                            <p class="product-description">Stacks blockchain data from Hiro API</p>
+                            <code class="endpoint-path">GET /api/x402/hiro/network-info</code>
+                            <div class="product-price">
+                                <span class="price-sbtc">0.0001 STX</span>
+                            </div>
+                            <button class="pay-button" onclick="testEndpoint('/api/x402/hiro/network-info', 'stx')">
+                                <span class="btn-icon">⚡</span>
+                                Test x402 Payment
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

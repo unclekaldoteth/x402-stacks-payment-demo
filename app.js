@@ -13,6 +13,9 @@ const cors = require('cors');
 const crypto = require('crypto');
 const path = require('path');
 
+// Data API module
+const { setupDataApiRoutes } = require('./data-api');
+
 // x402-stacks imports
 let x402Stacks;
 try {
@@ -153,6 +156,9 @@ function createX402Middleware(options) {
         next();
     };
 }
+
+// Setup Data API routes (CoinMarketCap + Hiro)
+setupDataApiRoutes(app, createX402Middleware, STXtoMicroSTX, CONFIG);
 
 // ============================================
 // FREE ENDPOINTS
