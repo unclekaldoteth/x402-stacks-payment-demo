@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="x402 Payment Protocol Demo for Stacks blockchain - Accept STX and sBTC payments">
+    <title>x402-stacks Payment Demo | STX & sBTC Payments</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">x402-stacks Demo</span>
+                </div>
+                <nav class="nav">
+                    <a href="#endpoints" class="nav-link">Endpoints</a>
+                    <a href="#how-it-works" class="nav-link">How It Works</a>
+                    <a href="https://github.com/unclekaldoteth/x402-stacks-payment-demo" target="_blank"
+                        class="nav-link">GitHub</a>
+                    <span class="network-badge" id="networkBadge">Testnet</span>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="gradient-text">x402</span> Payment Protocol
+                        <br>on Stacks Blockchain
+                    </h1>
+                    <p class="hero-subtitle">
+                        HTTP-native micropayments for APIs, AI agents, and digital services.
+                        Pay with STX or sBTC. No subscriptions, no API keys.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-value">HTTP 402</span>
+                            <span class="stat-label">Payment Required</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">STX + sBTC</span>
+                            <span class="stat-label">Multi-Token</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">~5s</span>
+                            <span class="stat-label">Settlement</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-glow"></div>
+        </section>
+
+        <!-- API Endpoints Section -->
+        <section class="products" id="endpoints">
+            <div class="container">
+                <h2 class="section-title">API Endpoints</h2>
+                <p class="section-subtitle">Try the x402 payment flow - click to test each endpoint</p>
+
+                <div class="products-grid">
+                    <!-- Free Endpoint -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-icon">🆓</div>
+                        </div>
+                        <div class="product-info">
+                            <span class="endpoint-badge free">FREE</span>
+                            <h3 class="product-name">Public Data</h3>
+                            <p class="product-description">Free endpoint - no payment required</p>
+                            <code class="endpoint-path">GET /api/public-data</code>
+                            <button class="pay-button free-btn" onclick="testEndpoint('/api/public-data', 'free')">
+                                Test Endpoint
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STX Endpoint -->
+                    <div class="product-card featured">
+                        <div class="featured-badge">x402</div>
+                        <div class="product-image">
+                            <div class="product-icon">💎</div>
+                        </div>
+                        <div class="product-info">
+                            <span class="endpoint-badge stx">STX</span>
+                            <h3 class="product-name">Premium STX Data</h3>
+                            <p class="product-description">Requires 0.001 STX payment via x402</p>
+                            <code class="endpoint-path">GET /api/x402/stx-data</code>
+                            <div class="product-price">
+                                <span class="price-sbtc">0.001 STX</span>
+                            </div>
+                            <button class="pay-button" onclick="testEndpoint('/api/x402/stx-data', 'stx')">
+                                <span class="btn-icon">⚡</span>
+                                Test x402 Payment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- sBTC Endpoint -->
+                    <div class="product-card featured">
+                        <div class="featured-badge">x402</div>
+                        <div class="product-image">
+                            <div class="product-icon">₿</div>
+                        </div>
+                        <div class="product-info">
+                            <span class="endpoint-badge sbtc">sBTC</span>
+                            <h3 class="product-name">Premium sBTC Data</h3>
+                            <p class="product-description">Requires 100 satoshis sBTC payment</p>
+                            <code class="endpoint-path">GET /api/x402/sbtc-data</code>
+                            <div class="product-price">
+                                <span class="price-sbtc">100 sats</span>
+                            </div>
+                            <button class="pay-button sbtc-btn" onclick="testEndpoint('/api/x402/sbtc-data', 'sbtc')">
+                                <span class="btn-icon">₿</span>
+                                Test sBTC Payment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI Analysis Endpoint -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="product-icon">🧠</div>
+                        </div>
+                        <div class="product-info">
+                            <span class="endpoint-badge stx">STX</span>
+                            <h3 class="product-name">AI Analysis</h3>
+                            <p class="product-description">Premium AI-powered market analysis</p>
+                            <code class="endpoint-path">GET /api/x402/premium-analysis</code>
+                            <div class="product-price">
+                                <span class="price-sbtc">0.01 STX</span>
+                            </div>
+                            <button class="pay-button" onclick="testEndpoint('/api/x402/premium-analysis', 'stx')">
+                                <span class="btn-icon">⚡</span>
+                                Test x402 Payment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How x402 Works</h2>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Request API</h3>
+                        <p class="step-description">Client sends HTTP request to protected endpoint</p>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">402 Response</h3>
+                        <p class="step-description">Server returns HTTP 402 with payment details</p>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Sign & Retry</h3>
+                        <p class="step-description">Client signs TX and retries with X-PAYMENT header</p>
+                    </div>
+                    <div class="step-arrow">→</div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Access Granted</h3>
+                        <p class="step-description">Server settles payment, returns data</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Response Modal -->
+        <div class="modal" id="responseModal">
+            <div class="modal-content wide">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div class="modal-body" id="modalBody">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Example Section -->
+        <section class="code-section">
+            <div class="container">
+                <h2 class="section-title">Quick Integration</h2>
+                <div class="code-tabs">
+                    <div class="code-block">
+                        <h3>Server (Express.js)</h3>
+                        <pre><code>import { x402PaymentRequired, STXtoMicroSTX } from 'x402-stacks';
+
+app.get('/api/premium',
+  x402PaymentRequired({
+    amount: STXtoMicroSTX(0.001),
+    address: 'SP1ZGGS886YCZHMFXJR1EK61ZP34FNWNSX32N685T',
+    network: 'testnet',
+  }),
+  (req, res) => {
+    res.json({ data: 'Premium content!' });
+  }
+);</code></pre>
+                    </div>
+                    <div class="code-block">
+                        <h3>Client (axios)</h3>
+                        <pre><code>import { withPaymentInterceptor, privateKeyToAccount } from 'x402-stacks';
+
+const account = privateKeyToAccount(privateKey, 'testnet');
+const api = withPaymentInterceptor(axios.create(), account);
+
+// Automatic payment handling!
+const data = await api.get('/api/premium');</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <p>Built for Talent Protocol Stacks Builder Challenge</p>
+                    <div class="footer-links">
+                        <a href="https://github.com/unclekaldoteth/x402-stacks-payment-demo" target="_blank">GitHub</a>
+                        <a href="https://github.com/tony1908/x402Stacks" target="_blank">x402-stacks</a>
+                        <a href="https://stacks.co" target="_blank">Stacks</a>
+                        <a href="https://talent.app" target="_blank">Talent Protocol</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
