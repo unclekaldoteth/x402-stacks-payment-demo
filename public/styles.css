@@ -869,3 +869,14 @@ body {
     border-radius: var(--radius-sm);
     color: var(--accent-orange);
 }
+
+/* USDCx Badge and Button */
+.endpoint-badge.usdcx {
+    background: rgba(39, 117, 202, 0.1);
+    color: #2775ca;
+    border: 1px solid rgba(39, 117, 202, 0.3);
+}
+
+.pay-button.usdcx-btn {
+    background: linear-gradient(135deg, #2775ca 0%, #1a5a9e 100%);
+}
