@@ -34,6 +34,10 @@ const CONFIG = {
     serverAddress: process.env.SERVER_STX_ADDRESS || 'SP1ZGGS886YCZHMFXJR1EK61ZP34FNWNSX32N685T',
     facilitatorUrl: process.env.FACILITATOR_URL || 'https://x402-backend-7eby.onrender.com',
     sbtcContract: process.env.SBTC_TOKEN_CONTRACT || 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token',
+    // USDCx Contract (1:1 USDC-backed via Circle xReserve)
+    usdcxContract: process.env.STACKS_NETWORK === 'mainnet'
+        ? 'SP120SBRBQJ00MCWS7TM5R8WJNTTKD5K0HFRC2CNE.usdcx-v1'
+        : 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.usdcx-v1',
     // sBTC Pay config (optional)
     sbtcApiKey: process.env.SBTC_API_KEY,
     webhookSecret: process.env.SBTC_WEBHOOK_SECRET
@@ -336,6 +340,55 @@ app.get('/api/x402/sbtc-data',
                     { protocol: 'Velar', apy: '12%', risk: 'low' },
                     { protocol: 'Alex', apy: '18%', risk: 'medium' },
                     { protocol: 'Arkadiko', apy: '8%', risk: 'low' }
+                ]
+            },
+            timestamp: new Date().toISOString()
+        });
+    }
+);
+
+// ============================================
+// x402 PAID ENDPOINTS - USDCx (USDC-backed stablecoin)
+// ============================================
+
+/**
+ * Convert USDC to smallest unit (6 decimals like USDC)
+ */
+function USDCtoMicroUSDC(usdc) {
+    return BigInt(Math.floor(usdc * 1000000));
+}
+
+/**
+ * Premium data endpoint - requires 0.10 USDCx payment ($0.10)
+ */
+app.get('/api/x402/usdcx-data',
+    createX402Middleware({
+        amount: USDCtoMicroUSDC(0.10), // $0.10 USDCx
+        tokenType: 'SIP010',
+        tokenContract: CONFIG.usdcxContract,
+        resource: '/api/x402/usdcx-data',
+        description: 'Premium Data (USDCx Payment)'
+    }),
+    (req, res) => {
+        res.json({
+            message: 'USDCx payment successful! Here is your stablecoin-purchased premium data.',
+            paymentInfo: req.paymentInfo,
+            data: {
+                usdcxInfo: {
+                    contract: CONFIG.usdcxContract,
+                    network: CONFIG.network,
+                    backing: '1:1 USDC via Circle xReserve',
+                    standard: 'SIP-010'
+                },
+                marketData: {
+                    btcPrice: 100000 + Math.random() * 5000,
+                    stxPrice: 1.5 + Math.random() * 0.5,
+                    usdcxPeg: 1.00
+                },
+                defiOnStacks: [
+                    { protocol: 'Velar', tvl: '$50M', usdcxSupported: true },
+                    { protocol: 'Alex', tvl: '$80M', usdcxSupported: true },
+                    { protocol: 'Arkadiko', tvl: '$30M', usdcxSupported: true }
                 ]
             },
             timestamp: new Date().toISOString()
