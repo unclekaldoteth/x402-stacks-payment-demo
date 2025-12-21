@@ -347,7 +347,93 @@ function setupDataApiRoutes(app, createX402Middleware, STXtoMicroSTX, CONFIG) {
         }
     );
 
-    console.log('📊 Data API routes registered (CoinMarketCap + Hiro)');
+
+    // ============================================
+    // USDCx Stablecoin Endpoints
+    // ============================================
+
+    // USDCx Contract addresses (1:1 USDC-backed via Circle xReserve)
+    const USDCX_CONTRACT = CONFIG.network === 'mainnet'
+        ? 'SP120SBRBQJ00MCWS7TM5R8WJNTTKD5K0HFRC2CNE.usdcx-v1'
+        : 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.usdcx-v1';
+
+    /**
+     * USDCx Balance Check - 0.0001 STX
+     */
+    app.get('/api/x402/usdcx/balance/:address',
+        createX402Middleware({
+            amount: STXtoMicroSTX(0.0001),
+            tokenType: 'STX',
+            resource: '/api/x402/usdcx/balance',
+            description: 'USDCx Balance Check'
+        }),
+        async (req, res) => {
+            const { address } = req.params;
+            const balance = await fetchHiroData(`/extended/v1/address/${address}/balances`);
+
+            if (!balance) {
+                return res.status(404).json({ success: false, error: 'Could not fetch balance' });
+            }
+
+            // Find USDCx token balance
+            const usdcxKey = Object.keys(balance.fungible_tokens || {})
+                .find(key => key.includes('usdcx'));
+            const usdcxBalance = usdcxKey 
+                ? BigInt(balance.fungible_tokens[usdcxKey]?.balance || 0)
+                : BigInt(0);
+
+            res.json({
+                message: 'USDCx Balance',
+                paymentInfo: req.paymentInfo,
+                source: 'Hiro Stacks API',
+                data: {
+                    address: address,
+                    contract: USDCX_CONTRACT,
+                    balance: (Number(usdcxBalance) / 1000000).toFixed(6),
+                    balance_raw: usdcxBalance.toString(),
+                    unit: 'USDCx'
+                },
+                timestamp: new Date().toISOString()
+            });
+        }
+    );
+
+    /**
+     * USDCx Info - 0.0001 STX
+     */
+    app.get('/api/x402/usdcx/info',
+        createX402Middleware({
+            amount: STXtoMicroSTX(0.0001),
+            tokenType: 'STX',
+            resource: '/api/x402/usdcx/info',
+            description: 'USDCx Token Information'
+        }),
+        async (req, res) => {
+            res.json({
+                message: 'USDCx Token Information',
+                paymentInfo: req.paymentInfo,
+                data: {
+                    name: 'USDCx',
+                    description: '1:1 USDC-backed stablecoin via Circle xReserve',
+                    contract: USDCX_CONTRACT,
+                    network: CONFIG.network,
+                    decimals: 6,
+                    standard: 'SIP-010',
+                    issuer: 'Circle',
+                    backing: 'USDC (1:1)',
+                    bridge: 'Circle xReserve / CCTP'
+                },
+                resources: {
+                    docs: 'https://docs.stacks.co/learn/bridging/usdcx',
+                    circle: 'https://developers.circle.com/xreserve',
+                    explorer: `https://explorer.hiro.so/token/${USDCX_CONTRACT}?chain=${CONFIG.network}`
+                },
+                timestamp: new Date().toISOString()
+            });
+        }
+    );
+
+    console.log('Data API routes registered (CoinMarketCap + Hiro + USDCx)');
 }
 
 module.exports = { setupDataApiRoutes };
